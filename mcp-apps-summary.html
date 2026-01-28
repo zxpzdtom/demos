@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VS Code MCP Apps 支持 - 文章总结</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+        h1 {
+            font-size: 2.5em;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+        .subtitle {
+            color: #8892b0;
+            font-size: 1.2em;
+        }
+        .meta {
+            margin-top: 20px;
+            color: #64ffda;
+            font-size: 0.9em;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.6s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        h2 {
+            color: #00d9ff;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0, 217, 255, 0.3);
+        }
+        h3 {
+            color: #00ff88;
+            font-size: 1.2em;
+            margin: 25px 0 15px;
+        }
+        p {
+            color: #ccd6f6;
+            margin-bottom: 15px;
+        }
+        .highlight {
+            background: linear-gradient(90deg, rgba(0, 217, 255, 0.2), rgba(0, 255, 136, 0.2));
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .demo-item {
+            background: rgba(0, 217, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(0, 217, 255, 0.3);
+        }
+        .demo-item h4 {
+            color: #00d9ff;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .demo-item p {
+            font-size: 0.95em;
+            color: #a8b2d1;
+        }
+        .badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff6b6b, #feca57);
+            color: #1a1a2e;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .badge.green {
+            background: linear-gradient(90deg, #00ff88, #00d9ff);
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #ccd6f6;
+        }
+        .feature-list li::before {
+            content: '🚀';
+            position: absolute;
+            left: 0;
+        }
+        .link-box {
+            background: rgba(0, 217, 255, 0.1);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .link-box a {
+            color: #00d9ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .link-box a:hover {
+            color: #00ff88;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: #8892b0;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-top: 20px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #00d9ff, #00ff88);
+        }
+        .timeline-item {
+            position: relative;
+            padding-bottom: 25px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #00ff88;
+        }
+        .timeline-date {
+            color: #64ffda;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 VS Code MCP Apps 支持</h1>
+            <p class="subtitle">赋予 AI agents 视觉交互能力</p>
+            <p class="meta">2026年1月26日 · Harald Kirschner & Connor Peet</p>
+        </header>
+
+        <div class="card">
+            <h2>📌 核心发布</h2>
+            <p>MCP Apps 是 <span class="highlight">MCP 协议的官方扩展</span>，允许工具调用直接返回交互式 UI 组件，在对话中渲染：</p>
+            <ul class="feature-list">
+                <li>仪表盘 (Dashboards)</li>
+                <li>表单 (Forms)</li>
+                <li>可视化图表 (Visualizations)</li>
+                <li>多步骤工作流 (Multi-step workflows)</li>
+            </ul>
+            <p style="margin-top: 20px;">✅ 现已在 <strong>VS Code Insiders</strong> 中可用，下周推广到稳定版</p>
+        </div>
+
+        <div class="card">
+            <h2>💡 解决的问题</h2>
+            <p>传统 AI agents 的痛点：</p>
+            <ul class="feature-list">
+                <li>只能输出文本，交互有限</li>
+                <li>需要来回描述才能调整结果</li>
+                <li>无法直接操作可视化数据</li>
+            </ul>
+            <p style="margin-top: 15px;">MCP Apps 让 agents 可以"给你看"而不仅仅是"告诉你"</p>
+        </div>
+
+        <div class="card">
+            <h2>🎯 演示场景</h2>
+            <div class="demo-grid">
+                <div class="demo-item">
+                    <h4>📋 交互式列表排序</h4>
+                    <p><strong>传统方式：</strong> Agent 文本输出排序结果，你来回调整</p>
+                    <p><strong>MCP Apps：</strong> 拖拽界面可视化排序，或让 AI 重新排列</p>
+                </div>
+                <div class="demo-item">
+                    <h4>📊 性能分析可视化</h4>
+                    <p><strong>传统方式：</strong> 文本总结 CPU 瓶颈</p>
+                    <p><strong>MCP Apps：</strong> 交互式火焰图，可展开调用栈、悬停查看 timing</p>
+                </div>
+                <div class="demo-item">
+                    <h4>🚩 功能标志选择器</h4>
+                    <p><strong>传统方式：</strong> 列出配置，需要 mental cross-reference</p>
+                    <p><strong>MCP Apps：</strong> 可搜索的标志选择器，实时环境状态，一键生成 SDK 代码</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🌟 合作伙伴：Storybook</h2>
+            <p>Storybook 已成为首批集成 MCP Apps 的开源项目。</p>
+            <div class="link-box">
+                <p>"用户现在可以直接在 agent 聊天中预览 Storybook 故事，无需在聊天和 Storybook 之间来回切换。"</p>
+                <p style="margin-top: 10px;">— Jeppe Reinhold (Storybook 核心贡献者)</p>
+            </div>
+            <p>你只需要求 agent "用我们的设计系统构建一个登录表单"，它就会直接在 VS Code 中渲染交互式组件预览。</p>
+        </div>
+
+        <div class="card">
+            <h2>📅 发布路线图</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <p class="timeline-date">2026年1月26日</p>
+                    <p>✅ VS Code Insiders 推出完整 MCP Apps 支持</p>
+                </div>
+                <div class="timeline-item">
+                    <p class="timeline-date">下周</p>
+                    <p>🚀 推广到 VS Code Stable</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔗 相关资源</h2>
+            <div class="link-box">
+                <p>📦 <a href="https://github.com/digitarald/mcp-apps-playground" target="_blank">MCP Apps 演示仓库</a></p>
+            </div>
+            <div class="link-box">
+                <p>🛠️ <a href="https://github.com/modelcontextprotocol/ext-apps/" target="_blank">MCP Apps SDK 和示例</a></p>
+            </div>
+            <div class="link-box">
+                <p>📖 <a href="https://code.visualstudio.com/docs/copilot/customization/mcp-servers" target="_blank">VS Code MCP 文档</a></p>
+            </div>
+            <div class="link-box">
+                <p>🎥 <a href="https://youtube.com/live/HWmC3T5Wwqw" target="_blank">VS Code 直播回顾</a> (MCP 核心维护者 Den Delimarsky)</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>💻 如何开始</h2>
+            <p>如果你是 MCP 服务器开发者：</p>
+            <ol style="padding-left: 20px; color: #ccd6f6; margin-top: 15px;">
+                <li style="margin-bottom: 10px;">安装 <span class="badge green">VS Code Insiders</span></li>
+                <li style="margin-bottom: 10px;">添加 MCP Apps 扩展让你的服务器更交互</li>
+                <li style="margin-bottom: 10px;">用 <span class="highlight">VS Code</span> 开发和调试你的 MCP 服务器</li>
+                <li>分享你的创作到社区！</li>
+            </ol>
+        </div>
+
+        <footer>
+            <p>Sometimes showing is better than telling — now your agents can do both.</p>
+            <p style="margin-top: 10px;">💙 Happy Coding!</p>
+        </footer>
+    </div>
+</body>
+</html>
